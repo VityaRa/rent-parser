@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import puppeteer, { Browser } from 'puppeteer';
-import { CIAN_ROOM_COUNT_MAPPER } from './cian/cian.mapper';
+import { CIAN_ROOM_COUNT_MAPPER } from '../config/cian/cian.mapper';
 
 @Injectable()
 export class FormatterService {

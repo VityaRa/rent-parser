@@ -1,6 +1,6 @@
 import { Page } from 'puppeteer';
 import { Logger } from '@nestjs/common';
-import { WebsiteConfig } from '../config.types';
+import { WebsiteConfig } from '../config/config.types';
 
 export class PageWrapper {
   private readonly logger = new Logger(PageWrapper.name);

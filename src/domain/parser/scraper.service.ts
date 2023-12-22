@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Page } from 'puppeteer';
-import { PageWrapper } from './page/page.wrapper';
-import { Rent } from './rent/rent.model';
-import { Project } from './project.enum';
+import { PageWrapper } from '../page/page.wrapper';
+import { Rent } from '../rent/rent.model';
+import { Project } from '../config/project.enum';
 import { FormatterService } from './formatter.service';
 
 @Injectable()

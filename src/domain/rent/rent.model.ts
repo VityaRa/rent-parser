@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { Project } from '../project.enum';
+import { Project } from '../config/project.enum';
 
 export type RentDocument = HydratedDocument<Rent>;
 

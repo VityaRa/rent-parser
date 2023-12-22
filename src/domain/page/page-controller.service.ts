@@ -2,10 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Page } from 'puppeteer';
 import { v4 as uuidv4 } from 'uuid';
 import { PageWrapper } from './page.wrapper';
-import { WebsiteConfig } from '../config.types';
-import { Project } from '../project.enum';
-import { BrowserService } from '../browser.service';
-import { CIAN_CONFIG } from '../cian/cian.config';
+import { WebsiteConfig } from '../config/config.types';
+import { Project } from '../config/project.enum';
+import { BrowserService } from '../parser/browser.service';
+import { CIAN_CONFIG } from '../config/cian/cian.config';
 
 interface PageQueryParams {
   count: number;
