@@ -28,6 +28,10 @@ export class PageControllerService {
 
   }
 
+  getMap() {
+    return this.pageMap;
+  }
+
   get(id: string): PageWrapper {
     return this.pageMap[id];
   }
@@ -39,14 +43,14 @@ export class PageControllerService {
   private createWrapper(
     config: WebsiteConfig,
     pageInstance: Page,
+    uuid: string,
   ): PageWrapper {
-    const uuid = uuidv4();
     return new PageWrapper(config, pageInstance, uuid);
   }
 
   add(config: WebsiteConfig, pageInstance: Page) {
     const uuid = uuidv4();
-    this.pageMap[uuid] = this.createWrapper(config, pageInstance);
+    this.pageMap[uuid] = this.createWrapper(config, pageInstance, uuid);
     this.logger.debug(
       `Created page instance with id = ${uuid} and project = ${config.project}`,
     );
@@ -93,5 +97,12 @@ export class PageControllerService {
 
   getRentLinks() {
     return this.rentLinks;
+  }
+
+  async openPage(link: string) {
+    const page = await this.browserService.createPageInstance();
+    const pageWrapperInstance = this.add(CIAN_CONFIG, page);
+    await pageWrapperInstance.gotoRentPage(link);
+    return pageWrapperInstance;
   }
 }

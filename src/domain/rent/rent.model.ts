@@ -38,6 +38,12 @@ export class Rent {
 
   @Prop()
   platformId: number;
+
+  @Prop()
+  roomCount: number;
+
+  @Prop()
+  link: string;
 }
 
-export const RentSchema = SchemaFactory.createForClass(Rent);
+export const RentSchema = SchemaFactory.createForClass(Rent).index({ platformId: 1, project: 1 });

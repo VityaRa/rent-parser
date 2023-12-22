@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model, ObjectId } from "mongoose";
+import { FilterQuery, Model, ObjectId } from "mongoose";
 import { Rent, RentDocument } from "./rent.model";
 import { RentRepository } from "./rent.repository";
 
@@ -12,5 +12,13 @@ export class RentService {
 
   async create(rentData: Rent) {
     await this.rentRepository.create(rentData);
+  }
+
+  async findOneById(id: number) {
+    return await this.rentRepository.findOneByProjectId(id);
+  }
+
+  async findOne(filter: FilterQuery<Rent> = {}) {
+    return await this.rentRepository.findOne(filter);
   }
 }

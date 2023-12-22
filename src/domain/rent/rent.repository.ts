@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model, ObjectId } from "mongoose";
-import { Rent, RentDocument } from "./rent.model";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { FilterQuery, Model, ObjectId } from 'mongoose';
+import { Rent, RentDocument } from './rent.model';
 
 @Injectable()
 export class RentRepository {
@@ -17,5 +17,13 @@ export class RentRepository {
 
   async deleteById(id: ObjectId) {
     await this.rentModel.findByIdAndDelete(id);
+  }
+
+  async findOneByProjectId(projectId: number) {
+    await this.rentModel.findOne({ projectId });
+  }
+
+  async findOne(filter: FilterQuery<Rent> = {}) {
+    return this.rentModel.findOne(filter);
   }
 }
