@@ -99,7 +99,7 @@ export class PageControllerService {
     return this.rentLinks;
   }
 
-  async openPage(link: string) {
+  async openPage(link: string, project: Project) {
     const page = await this.browserService.createPageInstance();
     const pageWrapperInstance = this.add(CIAN_CONFIG, page);
     await pageWrapperInstance.gotoRentPage(link);

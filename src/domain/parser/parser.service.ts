@@ -5,6 +5,7 @@ import { CIAN_CONFIG } from "../config/cian/cian.config";
 import { PageControllerService } from "../page/page-controller.service";
 import { RentService } from "../rent/rent.service";
 import { ScraperService } from "./scraper.service";
+import { Project } from "../config/project.enum";
 
 @Injectable()
 export class ParserService implements OnApplicationBootstrap {
@@ -25,13 +26,13 @@ export class ParserService implements OnApplicationBootstrap {
     // await this.startParsing();
   }
 
-  async checkIfRentParsed(url: string) {
+  private async checkIfRentParsed(url: string) {
     return await this.rentService.findOne({ link: url });
   }
 
-  async parsePageByUrl(url: string) {
+  async getRentDataFromUrl(url: string, project: Project) {
     this.logger.log(`parsePageByUrl started with url ${url}`);
-    const openedPage = await this.pageControllerService.openPage(url);
+    const openedPage = await this.pageControllerService.openPage(url, project);
     const rentData = await this.scraperService.getAll(openedPage);
     this.pageControllerService.remove(openedPage.id);
     this.logger.log(`parsePageByUrl finished with url ${url}`);
@@ -53,7 +54,7 @@ export class ParserService implements OnApplicationBootstrap {
   }
 
   //TODO: fix infinite work when pagination ended
-  async startParsing(maxRentCount = 1000) {
+  async startWithParams(maxRentCount = 1000, project = Project.CIAN) {
     this.logger.log(`currentSavedRents is ${this.currentSavedRents}`);
     this.logger.log(`paginationIndex is ${this.paginationIndex}`);
     const rentLinks = await this.getRentLinks(this.paginationIndex);
@@ -79,7 +80,7 @@ export class ParserService implements OnApplicationBootstrap {
     let createdCount = 0; 
     
     for (const chunk of chunckedRents) {
-      const rentPromises = chunk.map((link) => this.parsePageByUrl(link));
+      const rentPromises = chunk.map((link) => this.getRentDataFromUrl(link, project));
       const rentDataList = await Promise.all(rentPromises);
       for (const rentData of rentDataList) {
         await this.rentService.create(rentData);
@@ -90,6 +91,6 @@ export class ParserService implements OnApplicationBootstrap {
     this.logger.log(`createdCount is ${createdCount}`);
     this.currentSavedRents += createdCount;
     this.paginationIndex += 1;
-    this.startParsing(maxRentCount);
+    this.startWithParams(maxRentCount);
   }
 }
